@@ -1,11 +1,14 @@
 import { Component } from 'react';
 import FeedbackOptions from './FeedBackOptions/FeedbackOptions';
+import Section from './Section/Section';
+import Statistics from './Statistics/Statistics';
+import Notification from './Notification/Notification';
 
 class App extends Component {
   state = {
     good: 0,
     neutral: 0,
-    bed: 0,
+    bad: 0,
   };
 
   stateKeys() {
@@ -20,88 +23,39 @@ class App extends Component {
   };
 
   countTotalFeedback() {
-    return this.state.good + this.state.neutral + this.state.bed;
+    return this.state.good + this.state.neutral + this.state.bad;
   }
 
-  countPositiveFeedbackPercentage() {
-    return (this.state.good / this.countTotalFeedback()) * 100;
+  positivePercentage() {
+    return Math.round((this.state.good / this.countTotalFeedback()) * 100);
   }
 
   render() {
+    const { good, neutral, bad } = this.state;
     return (
       <div className="StatSection">
-        <h2>Please leave feedback</h2>
-
-        {/* <FeedbackOptions onEncrement={this.handleIncrement} /> */}
-        <button
-          type="button"
-          name="good"
-          onClick={event => this.handleIncrement(event.target.name)}
-        >
-          Good
-        </button>
-        <button
-          type="button"
-          name="neutral"
-          onClick={event => this.handleIncrement(event.target.name)}
-        >
-          Neutral
-        </button>
-        <button
-          type="button"
-          name="bed"
-          onClick={event => this.handleIncrement(event.target.name)}
-        >
-          Bed
-        </button>
-
-        <div className="Statistics">
-          <h2>Statistics</h2>
-          <ul>
-            <li>
-              <p>Good: {this.state.good}</p>
-            </li>
-            <li>
-              <p>Neutral: {this.state.neutral}</p>
-            </li>
-            <li>
-              <p>Bad: {this.state.bad}</p>
-            </li>
-            <li>
-              <p>Total: {this.countTotalFeedback()}</p>
-            </li>
-            <li>
-              <p>
-                Posinive feedback: {this.countPositiveFeedbackPercentage()}%
-              </p>
-            </li>
-          </ul>
-        </div>
-
-        {/* <Value value={this.state.value} />
-        <Controls
-          onIncrement={this.handleIncrement}
-          onDecrement={this.handleDecrement}
-        /> */}
+        <Section title="Please leave feedback">
+          <FeedbackOptions
+            options={Object.keys(this.state)}
+            onLeaveFeedback={this.handleIncrement}
+          />
+        </Section>
+        <Section title="Statistics">
+          {this.countTotalFeedback() === 0 ? (
+            <Notification message="There is no feedback" />
+          ) : (
+            <Statistics
+              good={good}
+              neutral={neutral}
+              bad={bad}
+              total={this.countTotalFeedback()}
+              positivePercentage={this.positivePercentage()}
+            />
+          )}
+        </Section>
       </div>
     );
   }
 }
 
 export default App;
-// export const App = () => {
-//   return (
-//     <div
-//       style={{
-//         height: '100vh',
-//         display: 'flex',
-//         justifyContent: 'center',
-//         alignItems: 'center',
-//         fontSize: 40,
-//         color: '#010101'
-//       }}
-//     >
-//       React homework template
-//     </div>
-//   );
-// };
