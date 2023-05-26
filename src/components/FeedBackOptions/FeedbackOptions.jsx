@@ -1,23 +1,32 @@
+import PropTypes from 'prop-types';
+
+import { FeedbackCont, Btn } from './FeedBackOptions.styled';
+
 export default function FeedbackOptions({ options, onLeaveFeedback }) {
   return (
-    <div>
+    <FeedbackCont>
       {options.map(option => {
         const capitalizedOption = option[0].toUpperCase() + option.slice(1);
 
         return (
-          <button
+          <Btn
             key={option}
             type="button"
             name={option}
             onClick={event => onLeaveFeedback(event.target.name)}
           >
             {capitalizedOption}
-          </button>
+          </Btn>
         );
       })}
 
       {/* <button type="button">Neutral</button>
       <button type="button">Bed</button> */}
-    </div>
+    </FeedbackCont>
   );
 }
+
+FeedbackOptions.propTypes = {
+  option: PropTypes.arrayOf(PropTypes.string),
+  onLeaveFeedback: PropTypes.func,
+};

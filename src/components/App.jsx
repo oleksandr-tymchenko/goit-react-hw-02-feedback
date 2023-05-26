@@ -4,6 +4,8 @@ import Section from './Section/Section';
 import Statistics from './Statistics/Statistics';
 import Notification from './Notification/Notification';
 
+import { Container } from './App.styled';
+
 class App extends Component {
   state = {
     good: 0,
@@ -11,19 +13,15 @@ class App extends Component {
     bad: 0,
   };
 
-  stateKeys() {
-    console.log(Object.keys(this.state));
-  }
-
   handleIncrement = key => {
     this.setState(prewState => ({
       [key]: prewState[key] + 1,
     }));
-    this.stateKeys();
   };
 
   countTotalFeedback() {
-    return this.state.good + this.state.neutral + this.state.bad;
+    const { good, neutral, bad } = this.state;
+    return good + neutral + bad;
   }
 
   positivePercentage() {
@@ -33,7 +31,16 @@ class App extends Component {
   render() {
     const { good, neutral, bad } = this.state;
     return (
-      <div className="StatSection">
+      <Container>
+        {/* style=
+        {{
+          height: '100vh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          fontSize: 40,
+          color: '#010101',
+        }} */}
         <Section title="Please leave feedback">
           <FeedbackOptions
             options={Object.keys(this.state)}
@@ -53,7 +60,7 @@ class App extends Component {
             />
           )}
         </Section>
-      </div>
+      </Container>
     );
   }
 }
